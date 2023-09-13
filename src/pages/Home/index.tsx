@@ -1,97 +1,33 @@
-import {  useState } from 'react';
 import { motion } from 'framer-motion';
 import { SignOut, Plus } from '@phosphor-icons/react';
-import { toast } from 'react-hot-toast';
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { api } from '../../lib/axios';
+import { ErrorMessage } from "@hookform/error-message"
 import { useAuth } from '../../hooks/useAuth';
 
 import { InputControl } from '../../components/Input';
-import { Task, TaskItem } from '../../components/TaskItem';
+import { TaskItem } from '../../components/TaskItem';
 
 import logo from '../../assets/logo.svg';
-import { useQuery } from '@tanstack/react-query';
+
+import { useHome } from './useHome';
 
 
 export function Home() {
-	const [isAsideRetrailed] = useState(false);
-	const [task, setTask] = useState('');
-	const [listTask, setListTask] = useState<Task[]>([]);
+
+	const { listTask,
+					isAsideRetrailed,
+					isFetching,
+					errors,
+					register,
+					handleSubmit,
+					handleAddTask,
+					handleCompleteTask,
+					handleDeleteTask,
+				} = useHome();
 
 	const { signout, user } = useAuth();
 
-	const [animationParent] = useAutoAnimate()
-
-
-	async function handleAddTask() {
-		if (!task) {
-			return toast.error('Preencha o campo Adicionar Tarefa');
-		}
-
-		try {
-			const { data } = await api.post('/tasks', {
-				title: task
-			});
-
-			setListTask(prevState => [...prevState, {
-				id: data.id,
-				title: data.title,
-				isCompleted: data.isCompleted
-			}])
-
-			setTask('');
-		} catch (error) {
-			toast.error('Ocorreu um erro, tente novamente')
-		}
-
-	}
-
-	async function handleCompleteTask(taskId: string) {
-		const task = [...listTask];
-
-		const taskIndex = task.findIndex(item => item.id === taskId);
-
-		task[taskIndex].isCompleted = !task[taskIndex].isCompleted;
-
-		const taskCompleted = task[taskIndex].isCompleted;
-
-
-		try {
-			await api.patch(`/tasks/${taskId}/completed`, {
-				completed: taskCompleted,
-			})
-
-			setListTask(task);
-		} catch (error) {
-			toast.error('Ocorreu um erro, tente novamente.')
-		}
-
-
-	}
-
-	async function handleDeleteTask(taskId: string) {
-
-		try {
-			await api.delete(`/tasks/${taskId}`)
-
-			setListTask(prevState => [...prevState.filter(task => task.id !== taskId)]);
-		} catch (error) {
-			return toast.error('Ocorreu um erro, tente novamente')
-		}
-	}
-
-
-	const { isFetching } = useQuery({
-		queryKey: ['userTasks'],
-		queryFn: async () => {
-			const { data } = await api.get('/tasks');
-
-			setListTask(data);
-
-			return data;
-		},
-	})
-
+	const [animationParent] = useAutoAnimate();
 
 	return (
 		<div
@@ -125,22 +61,29 @@ export function Home() {
 
 					<span className='block mt-12 text-lg'>Adicionar Tarefa</span>
 
-					<div className='w-full flex justify-between gap-5 mt-4'>
+					<form
+						className='relative w-full flex justify-between gap-5 mt-4'
+						onSubmit={handleSubmit(handleAddTask)}
+					>
 						<InputControl
 							className='w-full bg-transparent border-b border-b-cyan-400 outline-none'
 							type='text'
-							onChange={(event) => setTask(event.target.value)}
-							value={task}
+							{...register('task')}
 						/>
+						<ErrorMessage
+							errors={errors}
+							name="task"
+							render={({ message }) => (
+								<p className='absolute bottom-12 right-12 p-1.5 rounded bg-red-700 select-none'>{message}</p>
+								)}
+							/>
 						<button
-							type='button'
+							type='submit'
 							className='p-2 bg-cyan-400 text-cyan-950 rounded shadow-md shadow-cyan-400/20 hover:brightness-90'
-							onClick={handleAddTask}
 						>
 							<Plus weight='bold' />
 						</button>
-					</div>
-
+					</form>
 
 					<div
 						className='flex flex-col gap-2 mt-6 max-w-[418px]'
