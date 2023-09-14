@@ -4,6 +4,7 @@ import { InputContent, InputControl } from '../../components/Input';
 import { useRegister } from './useRegister';
 
 import logo from '../../assets/logo.svg';
+import { Link } from 'react-router-dom';
 
 export function Register() {
 	const { register, errors, handleRegister } = useRegister();
@@ -61,6 +62,12 @@ export function Register() {
 					</button>
 				</form>
 			</div>
+
+			<span
+					className='mt-5 text-zinc-300'
+				>
+					Já possui login, <Link className='underline hover:text-white' to='/login'>entre com sua conta</Link>
+				</span>
 		</div>
 	);
 }
