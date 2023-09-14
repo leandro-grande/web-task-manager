@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { SignOut, Plus } from '@phosphor-icons/react';
-import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { ErrorMessage } from "@hookform/error-message"
+import { useAutoAnimate } from '@formkit/auto-animate/react';
+import { ErrorMessage } from "@hookform/error-message";
 import { useAuth } from '../../hooks/useAuth';
 
 import { InputControl } from '../../components/Input';
@@ -72,9 +72,11 @@ export function Home() {
 						/>
 						<ErrorMessage
 							errors={errors}
-							name="task"
+							name='task'
 							render={({ message }) => (
-								<p className='absolute bottom-12 right-12 p-1.5 rounded bg-red-700 select-none'>{message}</p>
+								<p className='absolute bottom-12 right-12 p-1.5 rounded bg-red-700 select-none'>
+									{message}
+								</p>
 								)}
 							/>
 						<button
@@ -89,7 +91,9 @@ export function Home() {
 						className='flex flex-col gap-2 mt-6 max-w-[418px]'
 						ref={animationParent}
 					>
-						{ isFetching ? (
+						{ listTask.length == 0 && <p className='text-gray-400'>Não há tarefas cadastradas</p> }
+
+						{ isFetching && listTask.length > 0 ? (
 							<p className='text-gray-200 animate-pulse'>Carregando...</p>
 						) : (
 							listTask.map(task => (
