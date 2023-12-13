@@ -21,7 +21,7 @@ function App() {
 					<Toaster position='bottom-center' />
 				</AuthContextProvider>
 
-				<ReactQueryDevtools />
+				<ReactQueryDevtools  />
 			</QueryClientProvider>
 	);
 }
