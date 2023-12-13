@@ -41,7 +41,7 @@ export function Home() {
 				<img
 					src={logo}
 					className='w-32'
-					alt="Logo task manager"
+					alt="Logo task manager!"
 				/>
 				<button
 					onClick={signout}
