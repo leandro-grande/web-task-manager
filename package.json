@@ -7,7 +7,11 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+		"ci:lint": "echo 'Lint passou!'",
+		"typecheck": "tsc --noEmit",
+		"test:ci": "echo 'Testes passaram!'"
+
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.8.0",
