@@ -18,7 +18,7 @@ export function Login() {
 				/>
 
 				<div className='mt-16 flex items-center gap-3'>
-					<h1 className='text-2xl text-white'>Login</h1>
+					<h1 className='text-2xl text-white'>Acessar</h1>
 					<div className='h-6 w-6 rounded-full border border-dashed border-t-cyan-400 border-l-cyan-400 border-b-teal-400 border-r-teal-400 flex items-center justify-center'>
 						<ArrowRight className='w-3.5 h-3.5 text-white' />
 					</div>

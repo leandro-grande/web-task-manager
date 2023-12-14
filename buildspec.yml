@@ -12,3 +12,8 @@ phases:
   build:
     commands:
       - yarn build
+
+  post_build:
+    commands:
+      - aws s3 sync --delete ./dist s3://task-manager-private
+      - aws cloudfront create-invalidation --distribution-id E3RLJARJLUE5ID --paths /index.html
