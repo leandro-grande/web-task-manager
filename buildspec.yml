@@ -7,7 +7,6 @@ phases:
 
   pre_build:
     commands:
-      - npm pkg delete scripts.prepare
       - yarn install --lock-file
 
   build:
